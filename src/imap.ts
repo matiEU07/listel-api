@@ -1,18 +1,23 @@
+// imap.ts
 import Imap from "imap";
 import { ParsedMail, simpleParser } from "mailparser";
 import { Readable } from 'stream';
-import { promisify } from "util";
 
+interface ImapConfig {
+    user: string;
+    password: string;
+    host: string;
+    port: number;
+    tls: boolean;
+}
 
-const imap_getPaginatedMails = async (pagination: number, page: number = 1): Promise<ParsedMail[]> => {
+export const imap_getPaginatedMails = async (
+    config: ImapConfig,
+    pagination: number,
+    page: number = 1
+): Promise<ParsedMail[]> => {
     return new Promise((resolve, reject) => {
-        const imap = new Imap({
-            user: "jakubolejnik@tenco.waw.pl",
-            password: "adminadmin",
-            host: "mail.outsider.mikr.us",
-            port: 993,
-            tls: true,
-        });
+        const imap = new Imap(config);
 
         imap.once("ready", async () => {
             try {
@@ -74,4 +79,3 @@ const openInbox = (IMAP_CLIENT: Imap) =>
     });
 
 export default imap_getPaginatedMails;
-
