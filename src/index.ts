@@ -19,13 +19,7 @@ app.use(
     })
 );
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-});
+
 
 app.get("/greet", (req, res) => {
     res.send(
@@ -33,8 +27,8 @@ app.get("/greet", (req, res) => {
     )
 })
 
-app.get("/:protocol/receive/:pagination/:page{/:order}", async (req, res) => {
-
+app.get("/:protocol/receive/:pagination/:page/:order?", async (req, res) => {
+    
     const protocol = req.params.protocol.toLowerCase();
     const pagination = parseInt(req.params.pagination);
     const page = parseInt(req.params.page);
